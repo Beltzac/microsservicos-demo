@@ -8,12 +8,12 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
 {
     public class GreetConsumer : BackgroundService
     {
-        private readonly IWorldGreeter _helloWorldBusiness;
+        private readonly IWorldGreeter _worldGreeter;
         private readonly IMessageQueue<Greet> _messageQueue;       
 
-        public GreetConsumer(IWorldGreeter helloWorldBusiness, IMessageQueue<Greet> messageQueue)
+        public GreetConsumer(IWorldGreeter worldGreeter, IMessageQueue<Greet> messageQueue)
         {
-            _helloWorldBusiness = helloWorldBusiness;
+            _worldGreeter = worldGreeter;
             _messageQueue = messageQueue;
         }
 
@@ -29,7 +29,7 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
             {
                 var message = await _messageQueue.ReadAsync();
                 if (message != null)
-                    await _helloWorldBusiness.ProcessNewGreetAsync(message);                
+                    await _worldGreeter.ProcessNewGreetAsync(message);                
             }
         }
     }

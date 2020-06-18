@@ -24,6 +24,7 @@ namespace Beltzac.HelloWorld.Domain
 
         public async Task ProcessNewGreetAsync(Greet greet)
         {
+            //Just log for now
             _logger.LogInformation($"{greet.SentBy}:{greet.SentAt} >>> {greet.Id} - {greet.PoliteMessage}");
         }
 
@@ -31,7 +32,7 @@ namespace Beltzac.HelloWorld.Domain
         {
             var message = new Greet(GREETINGS_TO_WORLD);
             await _messageQueue.WriteAsync(message);
-            _logger.LogDebug($"Message sent from {_microServiceIdentification.Id}.");
+            _logger.LogDebug($"Message {message.Id} sent from {_microServiceIdentification.Id}");
         }
     }
 }

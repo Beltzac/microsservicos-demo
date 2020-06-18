@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Infrastructure
 {
-    class GreetQueue : IMessageQueue<Greet>, IDisposable
+    class GreetQueue : IMessageQueue<Greeting>, IDisposable
     {
         private string SENDER_ID_KEY = "SENDER_ID";
 
@@ -38,7 +38,7 @@ namespace Beltzac.HelloWorld.Infrastructure
 
             //todo:Não parece muito testavel
             _producer = new ProducerBuilder<Guid, string>(producerConfig)
-                .SetKeySerializer(_serializerGuid)
+                .SetKeySerializer(_serializerGuid)                
                 .Build();
 
             var consumerConfig = new ConsumerConfig
@@ -52,10 +52,11 @@ namespace Beltzac.HelloWorld.Infrastructure
             _consumer = new ConsumerBuilder<Guid, string>(consumerConfig)
                 .SetKeyDeserializer(_deserializerGuid)
                 .Build();
+
             _consumer.Subscribe(_options.Topic);
         }
 
-        public async Task WriteAsync(Greet message)
+        public async Task WriteAsync(Greeting message)
         {
             var kafkaMessage = new Message<Guid, string> { Key = message.Id, Value = message.PoliteMessage };
 
@@ -70,7 +71,7 @@ namespace Beltzac.HelloWorld.Infrastructure
             await _producer.ProduceAsync(_options.Topic, kafkaMessage);
         }
 
-        public async Task<Greet> ReadAsync()
+        public async Task<Greeting> ReadAsync()
         {
             var consumeResult = await Task.Run(() => _consumer.Consume(_options.MillisecondsReadTimeout)); //Não existe o ConsumeAsync ainda nessa versão
 
@@ -84,15 +85,7 @@ namespace Beltzac.HelloWorld.Infrastructure
             var context = new SerializationContext(MessageComponentType.Key, _options.Topic);
             var senderKey = _deserializerGuid.Deserialize(senderKeyBytes, senderKeyBytes == null, context);
 
-            Greet greet = new Greet
-            {
-                Id = kafkaMessage.Key,
-                SentAt = kafkaMessage.Timestamp.UtcDateTime,
-                SentBy = senderKey,
-                PoliteMessage = kafkaMessage.Value
-            };
-            
-            return greet;
+            return Greeting.Factory.CreateFromQueue(kafkaMessage.Key, senderKey, kafkaMessage.Timestamp.UtcDateTime, kafkaMessage.Value);
         }
 
         public void Dispose()

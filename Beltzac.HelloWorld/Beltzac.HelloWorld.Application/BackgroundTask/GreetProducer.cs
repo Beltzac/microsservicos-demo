@@ -1,5 +1,6 @@
 ﻿using Beltzac.HelloWorld.Domain;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,21 +9,32 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
 {
     public class GreetProducer : IHostedService, IDisposable
     {
-        private readonly IWorldGreeter _helloWorldBusiness;
+        private readonly IGreetingManager _worldGreeter;
+        private readonly ILogger<GreetProducer> _logger;
         private Timer _timer;
 
-        public GreetProducer(IWorldGreeter helloWorldBusiness)
+        public GreetProducer(IGreetingManager helloWorldBusiness, ILogger<GreetProducer> logger)
         {
-            _helloWorldBusiness = helloWorldBusiness;
+            _worldGreeter = helloWorldBusiness;
+            _logger = logger;
         }
 
         private void DoWork(object state)
         {
-            _helloWorldBusiness.SendAsync();
+            try
+            {
+                var greet = Greeting.Factory.CreateDefault();
+                _worldGreeter.SendAsync(greet);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error greeting the world");          
+            }
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Starting to produce messages");
             _timer = new Timer(DoWork, null, TimeSpan.Zero,  TimeSpan.FromSeconds(5));
             return Task.CompletedTask;
         }

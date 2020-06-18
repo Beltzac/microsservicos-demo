@@ -7,7 +7,7 @@ namespace Beltzac.HelloWorld.Domain
     {
         public static void AddDomainServices(this IServiceCollection services, IConfiguration configuration)
         { 
-            services.AddTransient<IWorldGreeter, WorldGreeter>();
+            services.AddSingleton<IGreetingManager, GreetingManager>();
         }
     }
 }

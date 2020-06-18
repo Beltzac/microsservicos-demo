@@ -27,9 +27,9 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var message = _messageQueue.Read();
+                var message = await _messageQueue.ReadAsync();
                 if (message != null)
-                    _helloWorldBusiness.Receive(message);                
+                    await _helloWorldBusiness.ReceiveAsync(message);                
             }
         }
     }

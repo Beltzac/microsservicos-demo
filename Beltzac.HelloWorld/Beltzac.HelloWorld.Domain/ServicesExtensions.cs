@@ -7,8 +7,7 @@ namespace Beltzac.HelloWorld.Domain
     public static class ServicesExtensions
     {
         public static void AddDomainServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddTransient<IClock, Clock>();
+        {            
             services.AddTransient<IMicroServiceIdentification, MicroServiceIdentification>();
             services.AddTransient<IHelloWorldBusiness, HelloWorldBusiness>();
         }

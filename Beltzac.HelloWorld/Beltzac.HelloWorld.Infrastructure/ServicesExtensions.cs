@@ -1,4 +1,4 @@
-﻿using Beltzac.HelloWorld.Infrastructure;
+﻿using Beltzac.HelloWorld.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,8 +8,8 @@ namespace Beltzac.HelloWorld.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IClock, Clock>();
             services.AddTransient<IMessageQueue, MessageQueue>();
-            services.AddTransient<IConsole, Console>();
         }
     }
 }

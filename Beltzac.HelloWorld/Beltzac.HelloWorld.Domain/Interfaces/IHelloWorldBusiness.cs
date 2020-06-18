@@ -1,8 +1,10 @@
-﻿namespace Beltzac.HelloWorld.Domain
+﻿using System.Threading.Tasks;
+
+namespace Beltzac.HelloWorld.Domain
 {
     public interface IHelloWorldBusiness
     {
-        void Receive(Message message);
-        void Send();
+        Task ReceiveAsync(Message message);
+        Task SendAsync();
     }
 }

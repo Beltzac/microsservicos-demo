@@ -18,7 +18,7 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
 
         private void DoWork(object state)
         {
-            _helloWorldBusiness.Send();
+            _helloWorldBusiness.SendAsync();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

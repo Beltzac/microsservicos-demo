@@ -2,7 +2,7 @@
 
 namespace Beltzac.HelloWorld.Domain
 {
-    interface IClock
+    public interface IClock
     {
         DateTime GetNow();
     }

@@ -2,9 +2,9 @@
 
 namespace Beltzac.HelloWorld.Domain
 {
-    public interface IHelloWorldBusiness
+    public interface IWorldGreeter
     {
-        Task ReceiveAsync(Message message);
+        Task ProcessNewGreetAsync(Greet message);
         Task SendAsync();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Beltzac.HelloWorld.Domain
 {
-    interface IMicroServiceIdentification
+    public interface IMicroserviceIdProvider
     {
         Guid Id { get; }
     }

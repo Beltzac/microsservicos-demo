@@ -15,7 +15,6 @@ namespace Beltzac.HelloWorld.Application
 {
     public class Startup
     {
-
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -26,26 +25,26 @@ namespace Beltzac.HelloWorld.Application
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationIoCServices(Configuration);
-            services.AddHostedService<MessageConsumer>();
-            services.AddHostedService<MessageProducer>();
+            services.AddHostedService<GreetConsumer>();
+            services.AddHostedService<GreetProducer>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
-            app.UseRouting();
+            //app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-            });
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapGet("/", async context =>
+            //    {
+            //        await context.Response.WriteAsync("Hello World!");
+            //    });
+            //});
         }
     }
 }

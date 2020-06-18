@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Application.BackgroundTask
 {
-    public class MessageProducer : IHostedService, IDisposable
+    public class GreetProducer : IHostedService, IDisposable
     {
-        private readonly IHelloWorldBusiness _helloWorldBusiness;
+        private readonly IWorldGreeter _helloWorldBusiness;
         private Timer _timer;
 
-        public MessageProducer(IHelloWorldBusiness helloWorldBusiness)
+        public GreetProducer(IWorldGreeter helloWorldBusiness)
         {
             _helloWorldBusiness = helloWorldBusiness;
         }

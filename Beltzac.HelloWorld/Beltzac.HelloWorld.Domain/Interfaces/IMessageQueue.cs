@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Infrastructure
 {
-    public interface IMessageQueue
+    public interface IMessageQueue<T>
     {
-        Task WriteAsync(Message text);
-        Task<Message> ReadAsync();
+        Task WriteAsync(T text);
+        Task<T> ReadAsync();
     }
 }

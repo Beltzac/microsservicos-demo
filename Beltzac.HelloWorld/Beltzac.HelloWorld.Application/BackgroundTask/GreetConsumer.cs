@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Application.BackgroundTask
 {
-    public class MessageConsumer : BackgroundService
+    public class GreetConsumer : BackgroundService
     {
-        private readonly IHelloWorldBusiness _helloWorldBusiness;
-        private readonly IMessageQueue _messageQueue;       
+        private readonly IWorldGreeter _helloWorldBusiness;
+        private readonly IMessageQueue<Greet> _messageQueue;       
 
-        public MessageConsumer(IHelloWorldBusiness helloWorldBusiness, IMessageQueue messageQueue)
+        public GreetConsumer(IWorldGreeter helloWorldBusiness, IMessageQueue<Greet> messageQueue)
         {
             _helloWorldBusiness = helloWorldBusiness;
             _messageQueue = messageQueue;
@@ -29,7 +29,7 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
             {
                 var message = await _messageQueue.ReadAsync();
                 if (message != null)
-                    await _helloWorldBusiness.ReceiveAsync(message);                
+                    await _helloWorldBusiness.ProcessNewGreetAsync(message);                
             }
         }
     }

@@ -1,8 +1,5 @@
 ﻿using Beltzac.HelloWorld.Infrastructure;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Domain
@@ -26,7 +23,7 @@ namespace Beltzac.HelloWorld.Domain
         public async Task ReceiveAsync(Greeting greeting)
         {
             //Just logging for now
-            _logger.LogInformation($"{_microServiceIdentification.Id} <<< {greeting.Id} - {greeting.PoliteMessage} - {greeting.SentAt} - {greeting.SentBy}");           
+            _logger.LogInformation($"{_microServiceIdentification.Id} <<< {greeting}");           
         }
 
         /// <summary>
@@ -35,7 +32,7 @@ namespace Beltzac.HelloWorld.Domain
         public async Task SendAsync(Greeting greeting)
         {            
             await _messageQueue.WriteAsync(greeting);
-            _logger.LogInformation($"{_microServiceIdentification.Id} >>> {greeting.Id} - {greeting.PoliteMessage}");
+            _logger.LogInformation($"{_microServiceIdentification.Id} >>> {greeting}");
         }
     }
 }

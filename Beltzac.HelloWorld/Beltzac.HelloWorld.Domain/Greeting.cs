@@ -17,6 +17,16 @@ namespace Beltzac.HelloWorld.Domain
         public DateTime? SentAt { get; set; }
         public string PoliteMessage { get; set; }
 
+        public override string ToString()
+        {
+            string description = $"Id: {Id} - Message: {PoliteMessage}";
+
+            if (SentBy != null)
+                description += $" - Timestamp: {SentAt} - Origin: {SentBy}";
+
+            return description;
+        }
+
         public static class Factory
         {
             public static Greeting CreateNew(string politeMessage)

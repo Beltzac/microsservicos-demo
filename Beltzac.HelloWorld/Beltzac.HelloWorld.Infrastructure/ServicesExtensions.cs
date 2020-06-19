@@ -10,8 +10,8 @@ namespace Beltzac.HelloWorld.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<GreetQueue.GreetQueueOptions>(options => configuration.GetSection("GreetQueue").Bind(options));
-            services.AddSingleton<IMessageQueue<Greeting>, GreetQueue>();
+            services.Configure<GreetingQueue.GreetQueueOptions>(options => configuration.GetSection("GreetQueue").Bind(options));
+            services.AddSingleton<IMessageQueue<Greeting>, GreetingQueue>();
             services.AddSingleton<IMicroserviceIdProvider, MicroserviceIdProvider>();
             services.AddSingleton<ISerializer<Guid>, GuidSerializer>();
             services.AddSingleton<IDeserializer<Guid>, GuidSerializer>();

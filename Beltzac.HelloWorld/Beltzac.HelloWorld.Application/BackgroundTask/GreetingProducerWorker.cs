@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Application.BackgroundTask
 {
-    public class GreetProducer : IHostedService, IDisposable
+    public class GreetingProducerWorker : IHostedService, IDisposable
     {
         private readonly IGreetingManager _worldGreeter;
-        private readonly ILogger<GreetProducer> _logger;
+        private readonly ILogger<GreetingProducerWorker> _logger;
         private Timer _timer;
 
-        public GreetProducer(IGreetingManager helloWorldBusiness, ILogger<GreetProducer> logger)
+        public GreetingProducerWorker(IGreetingManager helloWorldBusiness, ILogger<GreetingProducerWorker> logger)
         {
             _worldGreeter = helloWorldBusiness;
             _logger = logger;

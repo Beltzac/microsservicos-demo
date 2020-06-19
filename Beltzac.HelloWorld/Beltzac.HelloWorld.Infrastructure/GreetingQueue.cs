@@ -9,24 +9,25 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Infrastructure
 {
-    class GreetQueue : IMessageQueue<Greeting>, IDisposable
+    //todo:Não parece muito testavel
+    public class GreetingQueue : IMessageQueue<Greeting>, IDisposable
     {
-        private string SENDER_ID_KEY = "SENDER_ID";
+        private const string SENDER_ID_KEY = "SENDER_ID";
 
         private readonly IProducer<Guid, string> _producer;
         private readonly IConsumer<Guid, string> _consumer;
 
-        private readonly ISerializer<Guid> _serializerGuid;
-        private readonly IDeserializer<Guid> _deserializerGuid;
+        private readonly ISerializer<Guid> _guidSerializer;
+        private readonly IDeserializer<Guid> _guidDeserializer;
 
         private readonly IMicroserviceIdProvider _microserviceIdProvider;
 
         private readonly GreetQueueOptions _options;
 
-        public GreetQueue(IOptions<GreetQueueOptions> options, ISerializer<Guid> serializerGuid, IDeserializer<Guid> deserializerGuid, IMicroserviceIdProvider microserviceIdProvider)
+        public GreetingQueue(IOptions<GreetQueueOptions> options, ISerializer<Guid> guidSerializer, IDeserializer<Guid> guidDeserializer, IMicroserviceIdProvider microserviceIdProvider)
         {
-            _serializerGuid = serializerGuid;
-            _deserializerGuid = deserializerGuid;
+            _guidSerializer = guidSerializer;
+            _guidDeserializer = guidDeserializer;
             _microserviceIdProvider = microserviceIdProvider;
 
             _options = options.Value;
@@ -35,10 +36,9 @@ namespace Beltzac.HelloWorld.Infrastructure
             {
                 BootstrapServers = _options.Servers
             };
-
-            //todo:Não parece muito testavel
+            
             _producer = new ProducerBuilder<Guid, string>(producerConfig)
-                .SetKeySerializer(_serializerGuid)                
+                .SetKeySerializer(_guidSerializer)                
                 .Build();
 
             var consumerConfig = new ConsumerConfig
@@ -47,21 +47,20 @@ namespace Beltzac.HelloWorld.Infrastructure
                 GroupId = _options.Group,
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
-
-            //todo:Não parece muito testavel
+         
             _consumer = new ConsumerBuilder<Guid, string>(consumerConfig)
-                .SetKeyDeserializer(_deserializerGuid)
+                .SetKeyDeserializer(_guidDeserializer)
                 .Build();
 
             _consumer.Subscribe(_options.Topic);
         }
 
-        public async Task WriteAsync(Greeting message)
+        public async Task SendAsync(Greeting message)
         {
             var kafkaMessage = new Message<Guid, string> { Key = message.Id, Value = message.PoliteMessage };
 
             var context = new SerializationContext(MessageComponentType.Key, _options.Topic);
-            var serializedKey = _serializerGuid.Serialize(_microserviceIdProvider.Id, context);
+            var serializedKey = _guidSerializer.Serialize(_microserviceIdProvider.Id, context);
 
             kafkaMessage.Headers = new Headers
             {
@@ -71,7 +70,7 @@ namespace Beltzac.HelloWorld.Infrastructure
             await _producer.ProduceAsync(_options.Topic, kafkaMessage);
         }
 
-        public async Task<Greeting> ReadAsync()
+        public async Task<Greeting> ReceiveAsync()
         {
             var consumeResult = await Task.Run(() => _consumer.Consume(_options.MillisecondsReadTimeout)); //Não existe o ConsumeAsync ainda nessa versão
 
@@ -83,7 +82,7 @@ namespace Beltzac.HelloWorld.Infrastructure
             var senderKeyHeader = kafkaMessage.Headers?.FirstOrDefault(h => h.Key == SENDER_ID_KEY);
             var senderKeyBytes = senderKeyHeader?.GetValueBytes();
             var context = new SerializationContext(MessageComponentType.Key, _options.Topic);
-            var senderKey = _deserializerGuid.Deserialize(senderKeyBytes, senderKeyBytes == null, context);
+            var senderKey = _guidDeserializer.Deserialize(senderKeyBytes, senderKeyBytes == null, context);
 
             return Greeting.Factory.CreateFromQueue(kafkaMessage.Key, senderKey, kafkaMessage.Timestamp.UtcDateTime, kafkaMessage.Value);
         }

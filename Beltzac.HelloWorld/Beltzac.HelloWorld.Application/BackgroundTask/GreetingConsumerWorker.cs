@@ -1,6 +1,5 @@
 ﻿using Beltzac.HelloWorld.Domain;
 using Beltzac.HelloWorld.Infrastructure;
-using Confluent.Kafka;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Application.BackgroundTask
 {
-    public class GreetConsumer : BackgroundService
+    public class GreetingConsumerWorker : BackgroundService
     {
         private readonly IGreetingManager _worldGreeter;
         private readonly IMessageQueue<Greeting> _messageQueue;
-        private readonly ILogger<GreetConsumer> _logger;
+        private readonly ILogger<GreetingConsumerWorker> _logger;
 
-        public GreetConsumer(IGreetingManager worldGreeter, IMessageQueue<Greeting> messageQueue, ILogger<GreetConsumer> logger)
+        public GreetingConsumerWorker(IGreetingManager worldGreeter, IMessageQueue<Greeting> messageQueue, ILogger<GreetingConsumerWorker> logger)
         {
             _worldGreeter = worldGreeter;
             _messageQueue = messageQueue;
@@ -36,7 +35,7 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
                 Greeting greet = null;
                 try
                 {
-                    greet = await _messageQueue.ReadAsync();
+                    greet = await _messageQueue.ReceiveAsync();
 
                     if (greet != null)
                         await _worldGreeter.ReceiveAsync(greet);

@@ -6,7 +6,7 @@ namespace Beltzac.HelloWorld.Domain
 {
     public class Greeting
     {
-        private const string DEFAULT_GREETINGS = "Hello World";
+        public const string DEFAULT_GREETINGS = "Hello World";
 
         protected Greeting()
         {

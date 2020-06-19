@@ -3,7 +3,7 @@ using System;
 
 namespace Beltzac.HelloWorld.Infrastructure
 {
-    class MicroserviceIdProvider : IMicroserviceIdProvider
+    public class MicroserviceIdProvider : IMicroserviceIdProvider
     {
         public MicroserviceIdProvider()
         {

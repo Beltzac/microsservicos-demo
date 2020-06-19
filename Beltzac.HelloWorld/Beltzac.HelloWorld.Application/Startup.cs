@@ -25,8 +25,8 @@ namespace Beltzac.HelloWorld.Application
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationIoCServices(Configuration);
-            services.AddHostedService<GreetConsumer>();
-            services.AddHostedService<GreetProducer>();
+            services.AddHostedService<GreetingConsumerWorker>();
+            services.AddHostedService<GreetingProducerWorker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

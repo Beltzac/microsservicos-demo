@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Domain
 {
-    class GreetingManager : IGreetingManager
+    public class GreetingManager : IGreetingManager
     {
         private readonly IMicroserviceIdProvider _microServiceIdentification;
         private readonly IMessageQueue<Greeting> _messageQueue;
@@ -18,21 +18,26 @@ namespace Beltzac.HelloWorld.Domain
         }
 
         /// <summary>
+        /// Send a greeting for anyone to receive
+        /// </summary>
+        public async Task SendAsync(Greeting greeting)
+        {            
+            await _messageQueue.SendAsync(greeting);
+            DisplayGreetingsTraffic($"{_microServiceIdentification.Id} >>> {greeting}");
+        }
+
+        /// <summary>
         /// Acknowledge a greeting from someone
         /// </summary>
         public async Task ReceiveAsync(Greeting greeting)
         {
             //Just logging for now
-            _logger.LogInformation($"{_microServiceIdentification.Id} <<< {greeting}");           
+            DisplayGreetingsTraffic($"{_microServiceIdentification.Id} <<< {greeting}");
         }
 
-        /// <summary>
-        /// Send a greeting for anyone to receive
-        /// </summary>
-        public async Task SendAsync(Greeting greeting)
-        {            
-            await _messageQueue.WriteAsync(greeting);
-            _logger.LogInformation($"{_microServiceIdentification.Id} >>> {greeting}");
+        public virtual void DisplayGreetingsTraffic(string message)
+        {
+            _logger.LogInformation(message);
         }
     }
 }

@@ -54,5 +54,11 @@ namespace Beltzac.HelloWorld.Domain
                 };
             }
         }
+
+        public enum Direction
+        {
+            Incoming,
+            Outgoing
+        }
     }
 }

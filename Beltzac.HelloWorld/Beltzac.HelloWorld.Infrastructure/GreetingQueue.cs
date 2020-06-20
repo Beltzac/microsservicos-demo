@@ -34,7 +34,7 @@ namespace Beltzac.HelloWorld.Infrastructure
 
             var producerConfig = new ProducerConfig
             {
-                BootstrapServers = _options.Servers
+                BootstrapServers = _options.Servers                
             };
             
             _producer = new ProducerBuilder<Guid, string>(producerConfig)

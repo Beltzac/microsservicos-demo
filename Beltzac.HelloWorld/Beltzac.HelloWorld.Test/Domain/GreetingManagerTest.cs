@@ -2,6 +2,7 @@ using Beltzac.HelloWorld.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Test.Domain
@@ -19,7 +20,7 @@ namespace Beltzac.HelloWorld.Test.Domain
 
             await greetingManager.Object.SendAsync(greeting);
 
-            greetingManager.Verify(x => x.DisplayGreetingsTraffic(It.IsAny<string>()), Times.Once());
+            greetingManager.Verify(x => x.DisplayGreetingsTraffic(Greeting.Direction.Outgoing, greeting), Times.Once());
             ctx.GreetingQueue.Verify(x => x.SendAsync(greeting), Times.Once());
         }
 
@@ -33,7 +34,7 @@ namespace Beltzac.HelloWorld.Test.Domain
 
             await greetingManager.Object.ReceiveAsync(greeting);
 
-            greetingManager.Verify(x => x.DisplayGreetingsTraffic(It.IsAny<string>()), Times.Once());
+            greetingManager.Verify(x => x.DisplayGreetingsTraffic(Greeting.Direction.Incoming, greeting), Times.Once());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Beltzac.HelloWorld.Infrastructure;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Domain
@@ -23,7 +24,7 @@ namespace Beltzac.HelloWorld.Domain
         public async Task SendAsync(Greeting greeting)
         {            
             await _messageQueue.SendAsync(greeting);
-            DisplayGreetingsTraffic($"{_microServiceIdentification.Id} >>> {greeting}");
+            DisplayGreetingsTraffic(Greeting.Direction.Outgoing, greeting);
         }
 
         /// <summary>
@@ -32,12 +33,13 @@ namespace Beltzac.HelloWorld.Domain
         public async Task ReceiveAsync(Greeting greeting)
         {
             //Just logging for now
-            DisplayGreetingsTraffic($"{_microServiceIdentification.Id} <<< {greeting}");
+            DisplayGreetingsTraffic(Greeting.Direction.Incoming, greeting);
         }
 
-        public virtual void DisplayGreetingsTraffic(string message)
+        public virtual void DisplayGreetingsTraffic(Greeting.Direction direction, Greeting greeting)
         {
-            _logger.LogInformation(message);
+            string directionSymbol = direction == Greeting.Direction.Outgoing ? ">>>" : "<<<";
+            _logger.LogInformation("{id} {direction} {greeting}", _microServiceIdentification.Id, directionSymbol, greeting);
         }
     }
 }

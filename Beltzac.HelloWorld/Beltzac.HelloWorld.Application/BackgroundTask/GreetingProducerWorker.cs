@@ -28,7 +28,7 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error greeting the world");          
+                _logger.LogError(ex, "Error sending greetings");          
             }
         }
 

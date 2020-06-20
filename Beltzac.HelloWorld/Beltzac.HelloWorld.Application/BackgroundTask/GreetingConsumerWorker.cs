@@ -42,7 +42,7 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error processing greet message queue", greet);
+                    _logger.LogError(ex, "Error processing greet -> {greet}", greet);
                 }       
             }
         }

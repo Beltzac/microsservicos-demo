@@ -1,9 +1,22 @@
-# microsservicos-bari
+## Pré-requisitos
 
-To run with multiple consumers and producers:
+* Computador
+* Internet
+* .NET Core 3.1
+* Docker
 
-docker-compose up --scale hello_world_app=5
+## Como executar
 
-To rebuild before run:
+* Clonar o repositório
 
-docker-compose up --build
+* Rodar com apenas uma instância do microsserviço (ele lê as próprias mensagens):
+
+  >docker-compose up
+
+* Rodar com várias instâncias do microsserviço:
+
+  > docker-compose up --scale hello_world_app=5
+
+* Para reconstruir a imagem caso existam alterações no projeto:
+
+  > docker-compose up --build

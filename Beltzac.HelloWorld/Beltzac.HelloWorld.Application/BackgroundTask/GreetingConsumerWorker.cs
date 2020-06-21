@@ -10,13 +10,13 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
 {
     public class GreetingConsumerWorker : BackgroundService
     {
-        private readonly IGreetingManager _worldGreeter;
+        private readonly IGreetingManager _greetingManager;
         private readonly IMessageQueue<Greeting> _messageQueue;
         private readonly ILogger<GreetingConsumerWorker> _logger;
 
-        public GreetingConsumerWorker(IGreetingManager worldGreeter, IMessageQueue<Greeting> messageQueue, ILogger<GreetingConsumerWorker> logger)
+        public GreetingConsumerWorker(IGreetingManager greetingManager, IMessageQueue<Greeting> messageQueue, ILogger<GreetingConsumerWorker> logger)
         {
-            _worldGreeter = worldGreeter;
+            _greetingManager = greetingManager;
             _messageQueue = messageQueue;
             _logger = logger;
         }
@@ -30,20 +30,21 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
         private async Task StartConsumer(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Starting to consume messages");
+
             while (!stoppingToken.IsCancellationRequested)
             {
-                Greeting greet = null;
+                Greeting greeting = null;
                 try
                 {
-                    greet = await _messageQueue.ReceiveAsync();
+                    greeting = await _messageQueue.ReceiveAsync();
 
-                    if (greet != null)
-                        await _worldGreeter.ReceiveAsync(greet);
+                    if (greeting != null)
+                        await _greetingManager.ReceiveAsync(greeting);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error processing greet -> {greet}", greet);
-                }       
+                    _logger.LogError(ex, "Error processing greet -> {greeting}", greeting);
+                }
             }
         }
     }

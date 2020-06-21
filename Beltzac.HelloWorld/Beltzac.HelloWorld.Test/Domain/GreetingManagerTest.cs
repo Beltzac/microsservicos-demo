@@ -11,11 +11,11 @@ namespace Beltzac.HelloWorld.Test.Domain
     public class GreetingManagerTest
     {
         [TestMethod]
-        public async Task SendCallsLoggerAndQueues()
+        public async Task SendCallsDisplayAndQueues()
         {
             var ctx = new UnitTestContext();
             var greeting = Greeting.Factory.CreateDefault();
-            var greetingManager = new Mock<GreetingManager>(ctx.MicroserviceIdProvider.Object, ctx.GreetingQueue.Object, ctx.GreetingManagerLogger.Object);
+            var greetingManager = new Mock<GreetingManager>(ctx.MicroserviceIdProvider.Object, ctx.GreetingQueue.Object, ctx.GetLoggerMock<GreetingManager>().Object);
             greetingManager.CallBase = true;
 
             await greetingManager.Object.SendAsync(greeting);
@@ -25,11 +25,11 @@ namespace Beltzac.HelloWorld.Test.Domain
         }
 
         [TestMethod]
-        public async Task ReceiveCallsLogger()
+        public async Task ReceiveCallsDisplay()
         {
             var ctx = new UnitTestContext();
             var greeting = Greeting.Factory.CreateDefault();
-            var greetingManager = new Mock<GreetingManager>(ctx.MicroserviceIdProvider.Object, ctx.GreetingQueue.Object, ctx.GreetingManagerLogger.Object);
+            var greetingManager = new Mock<GreetingManager>(ctx.MicroserviceIdProvider.Object, ctx.GreetingQueue.Object, ctx.GetLoggerMock<GreetingManager>().Object);
             greetingManager.CallBase = true;
 
             await greetingManager.Object.ReceiveAsync(greeting);

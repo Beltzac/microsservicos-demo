@@ -1,6 +1,5 @@
 ﻿using Beltzac.HelloWorld.Domain;
 using Beltzac.HelloWorld.Infrastructure;
-using Castle.Core.Logging;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,13 +12,12 @@ namespace Beltzac.HelloWorld.Test
 {
     public class UnitTestContext
     {
-        public Mock<IOptions<GreetingQueue.GreetQueueOptions>> QueueOptions { get; set; }
-        public Mock<ISerializer<Guid>> GuidSerializer { get; set; }
-        public Mock<IDeserializer<Guid>> GuidDeserializer { get; set; }
-        public Mock<IMicroserviceIdProvider> MicroserviceIdProvider { get; set; }
-        public Mock<IMessageQueue<Greeting>> GreetingQueue { get; set; }
-
-        public Mock<ILogger<GreetingManager>> GreetingManagerLogger { get; set; }
+        public Mock<IOptions<GreetingQueue.GreetQueueOptions>> QueueOptions { get; }
+        public Mock<ISerializer<Guid>> GuidSerializer { get; }
+        public Mock<IDeserializer<Guid>> GuidDeserializer { get; }
+        public Mock<IMicroserviceIdProvider> MicroserviceIdProvider { get; }
+        public Mock<IMessageQueue<Greeting>> GreetingQueue { get; }
+        public Mock<IGreetingManager> GreetingManager { get; }
 
         public UnitTestContext() 
         {
@@ -28,8 +26,12 @@ namespace Beltzac.HelloWorld.Test
             GuidDeserializer = new Mock<IDeserializer<Guid>>();
             MicroserviceIdProvider = new Mock<IMicroserviceIdProvider>();
             GreetingQueue = new Mock<IMessageQueue<Greeting>>();
+            GreetingManager = new Mock<IGreetingManager>();
+        }
 
-            GreetingManagerLogger = new Mock<ILogger<GreetingManager>>();
+        public Mock<ILogger<T>> GetLoggerMock<T>()
+        {
+            return new Mock<ILogger<T>>();
         }
     }
 }

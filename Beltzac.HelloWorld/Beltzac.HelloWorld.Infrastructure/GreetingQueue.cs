@@ -88,6 +88,7 @@ namespace Beltzac.HelloWorld.Infrastructure
         public void Dispose()
         {
             _consumer?.Dispose();
+            _producer?.Flush();
             _producer?.Dispose();
         }
 

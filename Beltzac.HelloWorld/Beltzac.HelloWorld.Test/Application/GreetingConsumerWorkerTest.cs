@@ -1,9 +1,5 @@
 using Beltzac.HelloWorld.Application.BackgroundTask;
 using Beltzac.HelloWorld.Domain;
-using Beltzac.HelloWorld.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Threading;
@@ -21,8 +17,8 @@ namespace Beltzac.HelloWorld.Test.Application
             int count = 0;
 
             var greeting = Greeting.Factory.CreateDefault();
-            var ctx = new UnitTestContext();         
-            
+            var ctx = new UnitTestContext();
+
             var hostedService = new GreetingConsumerWorker(ctx.GreetingManager.Object, ctx.GreetingQueue.Object, ctx.GetLoggerMock<GreetingConsumerWorker>().Object);
 
             //Cancel after X calls

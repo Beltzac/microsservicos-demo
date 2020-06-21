@@ -5,8 +5,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Beltzac.HelloWorld.Test
 {
@@ -19,7 +17,7 @@ namespace Beltzac.HelloWorld.Test
         public Mock<IMessageQueue<Greeting>> GreetingQueue { get; }
         public Mock<IGreetingManager> GreetingManager { get; }
 
-        public UnitTestContext() 
+        public UnitTestContext()
         {
             QueueOptions = new Mock<IOptions<GreetingQueue.GreetQueueOptions>>();
             GuidSerializer = new Mock<ISerializer<Guid>>();

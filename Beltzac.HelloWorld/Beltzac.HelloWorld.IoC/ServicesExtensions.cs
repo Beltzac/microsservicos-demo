@@ -11,7 +11,7 @@ namespace Beltzac.HelloWorld.IoC
         {
             services.AddOptions();
             services.AddDomainServices(configuration);
-            services.AddInfrastructureServices(configuration);          
+            services.AddInfrastructureServices(configuration);
         }
     }
 }

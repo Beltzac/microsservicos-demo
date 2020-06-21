@@ -15,7 +15,7 @@ namespace Beltzac.HelloWorld.Test.Application
         {
             int expectedCount = 2;
             int count = 0;
-            
+
             var ctx = new UnitTestContext();
 
             //todo parametrizar tempo do timer
@@ -23,7 +23,7 @@ namespace Beltzac.HelloWorld.Test.Application
 
             //Cancel after X calls
             ctx.GreetingManager
-                .Setup(x => x.SendAsync(It.IsAny<Greeting>()))                
+                .Setup(x => x.SendAsync(It.IsAny<Greeting>()))
                 .Callback(async () =>
                 {
                     count++;

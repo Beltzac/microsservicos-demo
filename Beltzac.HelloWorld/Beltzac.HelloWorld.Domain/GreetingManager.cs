@@ -1,6 +1,5 @@
 ﻿using Beltzac.HelloWorld.Infrastructure;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Domain
@@ -22,7 +21,7 @@ namespace Beltzac.HelloWorld.Domain
         /// Send a greeting for anyone to receive
         /// </summary>
         public async Task SendAsync(Greeting greeting)
-        {            
+        {
             await _messageQueue.SendAsync(greeting);
             DisplayGreetingsTraffic(Greeting.Direction.Outgoing, greeting);
         }

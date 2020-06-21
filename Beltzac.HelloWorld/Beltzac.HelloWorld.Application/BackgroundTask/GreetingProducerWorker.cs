@@ -29,14 +29,14 @@ namespace Beltzac.HelloWorld.Application.BackgroundTask
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error sending greetings -> {greeting}", greeting);          
+                _logger.LogError(ex, "Error sending greetings -> {greeting}", greeting);
             }
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting to produce messages");
-            _timer = new Timer(DoWork, null, TimeSpan.Zero,  TimeSpan.FromSeconds(5));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
             return Task.CompletedTask;
         }
 

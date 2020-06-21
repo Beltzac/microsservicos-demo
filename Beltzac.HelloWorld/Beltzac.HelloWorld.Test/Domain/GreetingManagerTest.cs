@@ -1,8 +1,6 @@
 using Beltzac.HelloWorld.Domain;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Test.Domain

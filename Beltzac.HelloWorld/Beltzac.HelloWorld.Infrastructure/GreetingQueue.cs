@@ -1,10 +1,8 @@
 ﻿using Beltzac.HelloWorld.Domain;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Beltzac.HelloWorld.Infrastructure
@@ -34,11 +32,11 @@ namespace Beltzac.HelloWorld.Infrastructure
 
             var producerConfig = new ProducerConfig
             {
-                BootstrapServers = _options.Servers                
+                BootstrapServers = _options.Servers
             };
-            
+
             _producer = new ProducerBuilder<Guid, string>(producerConfig)
-                .SetKeySerializer(_guidSerializer)                
+                .SetKeySerializer(_guidSerializer)
                 .Build();
 
             var consumerConfig = new ConsumerConfig
@@ -47,7 +45,7 @@ namespace Beltzac.HelloWorld.Infrastructure
                 GroupId = _options.Group,
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
-         
+
             _consumer = new ConsumerBuilder<Guid, string>(consumerConfig)
                 .SetKeyDeserializer(_guidDeserializer)
                 .Build();
